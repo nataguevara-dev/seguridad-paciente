@@ -1,0 +1,9 @@
+•	Yo como profesional de la salud quiero reportar eventos de seguridad del paciente para que quede registro del mismo y luego se puedan tomar acciones.
+o	La información registrada queda almacenada. 
+o	Dado que el usuario hizo login, queda almacenado automáticamente quién realizó el reporte.
+o	Se incluye información del paciente afectado para generar trazabilidad. 
+o	Se incluye información básica de día, hora y lugar de ocurrencia. 
+o	Se incluye servicio prestado en el cual sucedió el evento. 
+o	Puedo contar en mis palabras lo que sucedió. 
+o	Al finalizar el reporte, se dispara el envío de notificación de un nuevo evento reportado. 
+o	Al finalizar el reporte, se regresa automáticamente a la pantalla principal.
