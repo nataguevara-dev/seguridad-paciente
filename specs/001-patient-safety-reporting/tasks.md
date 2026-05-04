@@ -18,12 +18,12 @@
 - [ ] T006 Setup backend Express application and in-memory Better-SQLite3 initialization in backend/src/startup.ts
 - [ ] T007 [P] Implement backend data models in backend/src/models/user.ts and backend/src/models/patient.ts
 - [ ] T008 [P] Implement backend data models in backend/src/models/safety-event.ts and backend/src/models/notification-config.ts
-- [ ] T009 Create backend configuration and supervisor email settings in backend/src/config.ts
-- [ ] T010 Implement shared backend validation and error response helpers in backend/src/shared/validation.ts
-- [ ] T011 Implement backend persistence repository for users and patients in backend/src/repositories/user-repository.ts and backend/src/repositories/patient-repository.ts
-- [ ] T012 Implement backend repository for safety events in backend/src/repositories/event-repository.ts
-- [ ] T013 Implement backend authentication service in backend/src/services/auth-service.ts
-- [ ] T014 Implement backend notification service in backend/src/services/notification-service.ts
+- [X] T009 Create backend configuration and supervisor email settings in backend/src/config.ts
+- [X] T010 Implement shared backend validation and error response helpers in backend/src/shared/validation.ts
+- [X] T011 Implement backend persistence repository for users and patients in backend/src/repositories/user-repository.ts and backend/src/repositories/patient-repository.ts
+- [X] T012 Implement backend repository for safety events in backend/src/repositories/event-repository.ts
+- [X] T013 Implement backend authentication service in backend/src/services/auth-service.ts
+- [X] T014 Implement backend notification service in backend/src/services/notification-service.ts
 
 ---
 
@@ -35,7 +35,7 @@
 
 ### Implementation
 
-- [ ] T015 [P] [US1] Define the event reporting API contract in specs/001-patient-safety-reporting/contracts/api-contract.md
+- [X] T015 [P] [US1] Define the event reporting API contract in specs/001-patient-safety-reporting/contracts/api-contract.md
 - [ ] T016 [US1] Implement backend event creation route and controller in backend/src/routes/events.ts and backend/src/controllers/events-controller.ts
 - [ ] T017 [US1] Implement safety event business logic in backend/src/services/event-service.ts
 - [ ] T018 [US1] Implement patient creation and event association logic in backend/src/services/event-service.ts
