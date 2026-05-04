@@ -1,5 +1,7 @@
 import Database from 'better-sqlite3';
 import express from 'express';
+import authRoutes from './routes/auth';
+import eventsRoutes from './routes/events';
 
 // Initialize in-memory database
 const db = new Database(':memory:');
@@ -50,6 +52,10 @@ db.prepare('INSERT INTO notification_configs (supervisorEmail) VALUES (?)').run(
 // Initialize Express app
 const app = express();
 app.use(express.json());
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/events', eventsRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

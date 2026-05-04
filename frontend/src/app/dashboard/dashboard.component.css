@@ -1,0 +1,41 @@
+/* Dashboard component styles */
+
+/* Custom styles for the dashboard */
+
+/* Card hover effects */
+.dashboard-card {
+  @apply transition-all duration-200;
+}
+
+.dashboard-card:hover {
+  @apply shadow-lg transform -translate-y-1;
+}
+
+/* Status indicators */
+.status-pending {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-resolved {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-critical {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Quick action buttons */
+.quick-action-btn {
+  @apply transition-all duration-200 hover:scale-105;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .dashboard-grid {
+    @apply grid-cols-1;
+  }
+
+  .header-layout {
+    @apply flex-col space-y-4 space-x-0;
+  }
+}

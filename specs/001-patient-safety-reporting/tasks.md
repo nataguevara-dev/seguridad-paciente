@@ -36,10 +36,10 @@
 ### Implementation
 
 - [X] T015 [P] [US1] Define the event reporting API contract in specs/001-patient-safety-reporting/contracts/api-contract.md
-- [ ] T016 [US1] Implement backend event creation route and controller in backend/src/routes/events.ts and backend/src/controllers/events-controller.ts
-- [ ] T017 [US1] Implement safety event business logic in backend/src/services/event-service.ts
-- [ ] T018 [US1] Implement patient creation and event association logic in backend/src/services/event-service.ts
-- [ ] T019 [US1] Implement supervisor notification call in backend/src/services/notification-service.ts
+- [X] T016 [US1] Implement backend event creation route and controller in backend/src/routes/events.ts and backend/src/controllers/events-controller.ts
+- [X] T017 [US1] Implement safety event business logic in backend/src/services/event-service.ts
+- [X] T018 [US1] Implement patient creation and event association logic in backend/src/services/event-service.ts
+- [X] T019 [US1] Implement supervisor notification call in backend/src/services/notification-service.ts
 - [ ] T020 [US1] Create the frontend event report component in frontend/src/app/event-report/event-report.component.ts
 - [ ] T021 [US1] Create the frontend event report template in frontend/src/app/event-report/event-report.component.html
 - [ ] T022 [US1] Implement event form validation and submission handling in frontend/src/app/event-report/event-report.component.ts

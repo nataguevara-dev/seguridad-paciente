@@ -1,0 +1,289 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center space-x-3 mb-4">
+        <div class="p-2 bg-red-100 rounded-lg">
+          <lucide-icon [img]="AlertTriangle" class="w-6 h-6 text-red-600"></lucide-icon>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-900">Reporte de Evento de Seguridad del Paciente</h1>
+      </div>
+      <p class="text-gray-600">Registre un incidente de seguridad del paciente. Esta información será notificada al supervisor correspondiente.</p>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="submitSuccess" class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-green-800">¡Reporte enviado exitosamente!</p>
+          <p class="text-sm text-green-700">Redirigiendo al dashboard...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="submitError" class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <lucide-icon [img]="AlertTriangle" class="w-5 h-5 text-red-400"></lucide-icon>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-red-800">{{ submitError }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <!-- Patient Information Section -->
+      <div class="px-6 py-4 bg-blue-50 border-b border-gray-200">
+        <div class="flex items-center space-x-2">
+          <lucide-icon [img]="User" class="w-5 h-5 text-blue-600"></lucide-icon>
+          <h2 class="text-lg font-semibold text-blue-900">Información del Paciente</h2>
+        </div>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- First Name -->
+          <div>
+            <label for="patientFirstName" class="block text-sm font-medium text-gray-700 mb-2">
+              Nombres *
+            </label>
+            <input
+              type="text"
+              id="patientFirstName"
+              formControlName="patientFirstName"
+              [class]="hasFieldError('patientFirstName') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+              class="block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+              placeholder="Ingrese los nombres"
+            />
+            <p *ngIf="hasFieldError('patientFirstName')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('patientFirstName') }}
+            </p>
+          </div>
+
+          <!-- Last Name -->
+          <div>
+            <label for="patientLastName" class="block text-sm font-medium text-gray-700 mb-2">
+              Apellidos *
+            </label>
+            <input
+              type="text"
+              id="patientLastName"
+              formControlName="patientLastName"
+              [class]="hasFieldError('patientLastName') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+              class="block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+              placeholder="Ingrese los apellidos"
+            />
+            <p *ngIf="hasFieldError('patientLastName')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('patientLastName') }}
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Clinical History Number -->
+          <div>
+            <label for="clinicalHistoryNumber" class="block text-sm font-medium text-gray-700 mb-2">
+              Historia Clínica *
+            </label>
+            <input
+              type="text"
+              id="clinicalHistoryNumber"
+              formControlName="clinicalHistoryNumber"
+              [class]="hasFieldError('clinicalHistoryNumber') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+              class="block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+              placeholder="Número de historia"
+            />
+            <p *ngIf="hasFieldError('clinicalHistoryNumber')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('clinicalHistoryNumber') }}
+            </p>
+          </div>
+
+          <!-- Document Type -->
+          <div>
+            <label for="documentType" class="block text-sm font-medium text-gray-700 mb-2">
+              Tipo de Documento *
+            </label>
+            <select
+              id="documentType"
+              formControlName="documentType"
+              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            >
+              <option value="Cédula de ciudadanía">Cédula de ciudadanía</option>
+              <option value="Cédula de extranjería">Cédula de extranjería</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="Registro civil">Registro civil</option>
+            </select>
+          </div>
+
+          <!-- Document Number -->
+          <div>
+            <label for="documentNumber" class="block text-sm font-medium text-gray-700 mb-2">
+              Número de Documento *
+            </label>
+            <input
+              type="text"
+              id="documentNumber"
+              formControlName="documentNumber"
+              [class]="hasFieldError('documentNumber') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+              class="block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+              placeholder="Número del documento"
+            />
+            <p *ngIf="hasFieldError('documentNumber')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('documentNumber') }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Birth Date -->
+        <div>
+          <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-2">
+            Fecha de Nacimiento *
+          </label>
+          <input
+            type="date"
+            id="birthDate"
+            formControlName="birthDate"
+            [class]="hasFieldError('birthDate') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+            class="block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+          />
+          <p *ngIf="hasFieldError('birthDate')" class="mt-1 text-sm text-red-600">
+            {{ getFieldError('birthDate') }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Event Information Section -->
+      <div class="px-6 py-4 bg-orange-50 border-b border-gray-200">
+        <div class="flex items-center space-x-2">
+          <lucide-icon [img]="FileText" class="w-5 h-5 text-orange-600"></lucide-icon>
+          <h2 class="text-lg font-semibold text-orange-900">Información del Evento</h2>
+        </div>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Service -->
+          <div>
+            <label for="service" class="block text-sm font-medium text-gray-700 mb-2">
+              Servicio *
+            </label>
+            <select
+              id="service"
+              formControlName="service"
+              [class]="hasFieldError('service') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+              class="block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+            >
+              <option value="">Seleccione un servicio</option>
+              <option value="Urgencias">Urgencias</option>
+              <option value="Medicina Interna">Medicina Interna</option>
+              <option value="Cirugía">Cirugía</option>
+              <option value="Pediatría">Pediatría</option>
+              <option value="Ginecología">Ginecología</option>
+              <option value="Psiquiatría">Psiquiatría</option>
+              <option value="UCI">UCI</option>
+              <option value="Otro">Otro</option>
+            </select>
+            <p *ngIf="hasFieldError('service')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('service') }}
+            </p>
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label for="location" class="block text-sm font-medium text-gray-700 mb-2">
+              Ubicación *
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <lucide-icon [img]="MapPin" class="w-4 h-4 text-gray-400"></lucide-icon>
+              </div>
+              <input
+                type="text"
+                id="location"
+                formControlName="location"
+                [class]="hasFieldError('location') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+                class="block w-full pl-10 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+                placeholder="Ej: Hospital Central - Sala 3"
+              />
+            </div>
+            <p *ngIf="hasFieldError('location')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('location') }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Occurred At -->
+        <div>
+          <label for="occurredAt" class="block text-sm font-medium text-gray-700 mb-2">
+            Fecha y Hora del Evento *
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <lucide-icon [img]="Calendar" class="w-4 h-4 text-gray-400"></lucide-icon>
+            </div>
+            <input
+              type="datetime-local"
+              id="occurredAt"
+              formControlName="occurredAt"
+              [class]="hasFieldError('occurredAt') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+              class="block w-full pl-10 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+            />
+          </div>
+          <p *ngIf="hasFieldError('occurredAt')" class="mt-1 text-sm text-red-600">
+            {{ getFieldError('occurredAt') }}
+          </p>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+            Descripción del Evento *
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="6"
+            [class]="hasFieldError('description') ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+            class="block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+            placeholder="Describa detalladamente el evento de seguridad del paciente. Incluya qué sucedió, cómo se detectó y cualquier acción inmediata tomada."
+          ></textarea>
+          <p class="mt-1 text-sm text-gray-500">
+            {{ eventForm.get('description')?.value?.length || 0 }}/1000 caracteres
+          </p>
+          <p *ngIf="hasFieldError('description')" class="mt-1 text-sm text-red-600">
+            {{ getFieldError('description') }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+        <div class="flex justify-end space-x-3">
+          <button
+            type="button"
+            (click)="router.navigate(['/dashboard'])"
+            class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="isSubmitting"
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <lucide-icon [img]="Send" class="w-4 h-4 mr-2"></lucide-icon>
+            {{ isSubmitting ? 'Enviando...' : 'Enviar Reporte' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
