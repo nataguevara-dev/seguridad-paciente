@@ -13,6 +13,12 @@
 - Al finalizar el reporte, se dispara el envío de notificación de un nuevo evento reportado.
 - Al finalizar el reporte, se regresa automáticamente a la pantalla principal."
 
+## Clarifications
+
+### Session 2026-05-03
+
+- Q: ¿Cómo debe resolverse la notificación al supervisor? → A: Enviar la notificación a un correo electrónico de supervisor configurado para el prototipo.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Report patient safety event (Priority: P1)
@@ -78,6 +84,7 @@ A signed-in user can access a dashboard that provides navigation to available mo
 - **FR-006**: System MUST store each reported event with the current user as the reporter.
 - **FR-007**: System MUST collect patient details, date, time, location, service, and a narrative description for each event.
 - **FR-008**: System MUST trigger a notification to a supervisor when a new event is successfully reported.
+- **FR-008a**: System MUST use a configured supervisor email address for notification delivery in the prototype.
 - **FR-009**: System MUST redirect the user back to the main dashboard after successful event submission.
 - **FR-010**: System MUST preserve event traceability by associating the report with the affected patient and occurrence metadata.
 
@@ -104,5 +111,6 @@ A signed-in user can access a dashboard that provides navigation to available mo
 - The prototype uses in-memory persistence; data remains available only while the application is running.
 - Supervisor notification delivery may be implemented as an email gateway or simulated email output for prototype validation.
 - All listed healthcare professional roles are allowed to report safety events without additional role-based restrictions.
+- The supervisor notification is sent to a configured supervisor email address for the prototype.
 - The base dashboard is sufficient for navigation; advanced analytics and administration are out of scope for this feature.
 - The user experience and visual styling are guided by DESIGN.md, with a focus on consistency, accessibility, and responsive behavior.
