@@ -5,7 +5,7 @@
   functions = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "24"
   VITE_API_BASE_URL = "https://seguridad-paciente-backend.onrender.com"
 
 [[redirects]]
