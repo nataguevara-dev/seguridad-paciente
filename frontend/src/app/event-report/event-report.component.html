@@ -1,14 +1,14 @@
-<div class="min-h-screen bg-gray-50 py-8">
+<div class="min-h-screen" style="background-color: var(--muted); padding: 2rem 0;">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="mb-8">
       <div class="flex items-center space-x-3 mb-4">
-        <div class="p-2 bg-red-100 rounded-lg">
-          <lucide-icon [img]="AlertTriangle" class="w-6 h-6 text-red-600"></lucide-icon>
+        <div class="p-2 rounded-lg" style="background-color: rgba(239, 68, 68, 0.1);">
+          <lucide-icon [img]="AlertTriangle" class="w-6 h-6" style="color: var(--destructive);"></lucide-icon>
         </div>
-        <h1 class="text-3xl font-bold text-gray-900">Reporte de Evento de Seguridad del Paciente</h1>
+        <h1 class="text-3xl font-bold" style="color: var(--foreground);">Reporte de Evento de Seguridad del Paciente</h1>
       </div>
-      <p class="text-gray-600">Registre un incidente de seguridad del paciente. Esta información será notificada al supervisor correspondiente.</p>
+      <p style="color: var(--muted-foreground);">Registre un incidente de seguridad del paciente. Esta información será notificada al supervisor correspondiente.</p>
     </div>
 
     <!-- Success Message -->
@@ -269,7 +269,7 @@
         <div class="flex justify-end space-x-3">
           <button
             type="button"
-            (click)="router.navigate(['/dashboard'])"
+            (click)="goToDashboard()"
             class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Cancelar

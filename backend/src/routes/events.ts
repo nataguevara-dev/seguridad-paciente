@@ -10,7 +10,7 @@ import { UserModel } from '../models/user';
 import { PatientModel } from '../models/patient';
 import { SafetyEventModel } from '../models/safety-event';
 import { NotificationConfigModel } from '../models/notification-config';
-import { db } from '../startup';
+import { db } from '../database';
 
 const router = Router();
 
@@ -36,6 +36,7 @@ const eventsController = new EventsController(eventService, authService);
 
 // Routes
 router.post('/', eventsController.createEvent.bind(eventsController));
+router.get('/stats', eventsController.getStats.bind(eventsController));
 router.get('/', eventsController.getEvents.bind(eventsController));
 
 export default router;
