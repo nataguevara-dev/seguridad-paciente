@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { LucideAngularModule, FileText, Search, X, ChevronLeft, ChevronRight, Filter } from 'lucide-angular';
 import { EventsService, SafetyEvent, EventFilters } from '../services/events.service';
 import { EventDetailModalComponent } from '../event-detail-modal/event-detail-modal.component';
@@ -8,7 +8,7 @@ import { EventDetailModalComponent } from '../event-detail-modal/event-detail-mo
 @Component({
   selector: 'app-event-history',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, EventDetailModalComponent],
+  imports: [NgIf, NgForOf, LucideAngularModule, EventDetailModalComponent],
   templateUrl: './event-history.component.html',
   styleUrls: ['./event-history.component.css']
 })

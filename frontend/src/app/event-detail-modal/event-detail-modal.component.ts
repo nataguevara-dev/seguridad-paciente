@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { SafetyEvent } from '../services/events.service';
 
 @Component({
   selector: 'app-event-detail-modal',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [NgIf, LucideAngularModule],
   templateUrl: './event-detail-modal.component.html',
   styleUrls: ['./event-detail-modal.component.css']
 })

@@ -7,6 +7,16 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['src/test-setup.ts']
+    setupFiles: ['src/test-setup.ts'],
+    pool: {
+      type: 'forks'
+    },
+    maxWorkers: 1,
+    coverage: {
+      provider: 'istanbul',
+      reporter: ['text', 'lcov'],
+      reportsDirectory: 'coverage',
+      exclude: ['**/*.spec.ts', '**/*.test.ts']
+    }
   },
 });
