@@ -8,10 +8,6 @@
   NODE_VERSION = "20"
   VITE_API_BASE_URL = "https://seguridad-paciente-backend.onrender.com"
 
-# Variable de entorno para la función config.ts
-# Cambiar a tu URL de backend en producción
-API_BASE_URL = "http://localhost:3000"
-
 [[redirects]]
   from = "/*"
   to = "/index.html"
