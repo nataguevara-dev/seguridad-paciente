@@ -10,6 +10,12 @@ export default defineConfig({
     ['list'],
     ['html', { outputFolder: 'e2e-report' }]
   ],
+  webServer: {
+    command: 'sh -c "cd backend && bun run start & cd ../frontend && bun run start"',
+    url: 'http://localhost:4200',
+    reuseExistingServer: true,
+    timeout: 120000,
+  },
   use: {
     baseURL: 'http://localhost:4200',
     trace: 'on-first-retry',

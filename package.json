@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "test:e2e": "bun run playwright test",
+    "playwright:install": "bun run playwright install chromium",
+    "playwright:show-report": "bun run playwright show-report test-results"
+  },
   "dependencies": {
     "@playwright/test": "^1.60.0"
   }
