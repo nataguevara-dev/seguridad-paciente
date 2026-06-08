@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { AuthService } from './auth.service';
+import { API_AUTH_URL } from '../config';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -30,7 +31,7 @@ describe('AuthService', () => {
       expect(result.success).toBe(true);
       expect(localStorage.getItem('auth_token')).toBe('abc123');
       expect(localStorage.getItem('user')).toContain('test@test.com');
-      expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/register', expect.objectContaining({
+      expect(fetch).toHaveBeenCalledWith(`${API_AUTH_URL}/register`, expect.objectContaining({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: 'test@test.com', password: 'password123', role: 'reporter' })
@@ -86,7 +87,7 @@ describe('AuthService', () => {
       expect(result.success).toBe(true);
       expect(localStorage.getItem('auth_token')).toBe('xyz789');
       expect(localStorage.getItem('user')).toContain('test@test.com');
-      expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/login', expect.objectContaining({
+      expect(fetch).toHaveBeenCalledWith(`${API_AUTH_URL}/login`, expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({ email: 'test@test.com', password: 'password123' })
       }));
@@ -132,7 +133,7 @@ describe('AuthService', () => {
       const result = await service.getCurrentUser();
 
       expect(result).toEqual({ id: '1', email: 'test@test.com', role: 'reporter' });
-      expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/me', expect.objectContaining({
+      expect(fetch).toHaveBeenCalledWith(`${API_AUTH_URL}/me`, expect.objectContaining({
         headers: { 'Authorization': 'Bearer valid-token' }
       }));
     });

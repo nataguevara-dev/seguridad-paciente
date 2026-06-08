@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
+import { API_STATS_URL } from '../config';
 
 export interface ServiceStat {
   service: string;
@@ -39,7 +40,7 @@ export interface StatsFilters {
   providedIn: 'root'
 })
 export class StatisticsService {
-  private apiUrl = 'http://localhost:3000/api/events/stats';
+  private apiUrl = API_STATS_URL;
 
   constructor(private authService: AuthService) {}
 

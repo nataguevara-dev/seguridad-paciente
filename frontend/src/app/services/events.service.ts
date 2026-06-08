@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
+import { API_EVENTS_URL } from '../config';
 
 export interface SafetyEvent {
   id: string;
@@ -42,7 +43,7 @@ export interface PaginatedResponse {
   providedIn: 'root'
 })
 export class EventsService {
-  private apiUrl = 'http://localhost:3000/api/events';
+  private apiUrl = API_EVENTS_URL;
 
   constructor(private authService: AuthService) {}
 

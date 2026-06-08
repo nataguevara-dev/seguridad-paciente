@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { API_STATS_URL } from '../config';
 import { StatisticsService } from './statistics.service';
 
 describe('StatisticsService', () => {
@@ -31,7 +32,7 @@ describe('StatisticsService', () => {
     const result = await service.getStatistics();
 
     expect(result).toEqual(mockStats);
-    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/events/stats', expect.objectContaining({
+    expect(fetch).toHaveBeenCalledWith(API_STATS_URL, expect.objectContaining({
       headers: { 'Authorization': 'Bearer stats-token', 'Content-Type': 'application/json' }
     }));
   });
