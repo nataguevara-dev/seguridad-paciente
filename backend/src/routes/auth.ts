@@ -3,7 +3,7 @@ import { AuthController } from '../controllers/auth-controller';
 import { AuthService } from '../services/auth-service';
 import { UserRepository } from '../repositories/user-repository';
 import { UserModel } from '../models/user';
-import { db } from '../startup';
+import { db } from '../database';
 
 const router = Router();
 

@@ -13,8 +13,12 @@
           </div>
         </div>
         <div class="flex items-center space-x-4">
-          <span class="text-sm text-gray-700">Bienvenido, Usuario</span>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+          <div class="text-right">
+            <p class="text-sm text-gray-700">{{ currentUser?.email }}</p>
+            <p class="text-xs text-gray-500 capitalize">{{ currentUser?.role }}</p>
+          </div>
+          <button (click)="logout()" class="inline-flex items-center bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium transition">
+            <lucide-icon [img]="LogOut" class="w-4 h-4 mr-2"></lucide-icon>
             Cerrar Sesión
           </button>
         </div>
@@ -89,9 +93,9 @@
           </div>
           <div class="bg-gray-50 px-5 py-3">
             <div class="text-sm">
-              <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+              <button (click)="navigateToEventHistory()" class="font-medium text-blue-600 hover:text-blue-500">
                 Ver todos <span aria-hidden="true">&rarr;</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -119,9 +123,9 @@
           </div>
           <div class="bg-gray-50 px-5 py-3">
             <div class="text-sm">
-              <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+              <button (click)="navigateToStatistics()" class="font-medium text-blue-600 hover:text-blue-500">
                 Ver estadísticas <span aria-hidden="true">&rarr;</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -137,8 +141,30 @@
             Últimos eventos reportados en el sistema.
           </p>
         </div>
-        <ul role="list" class="divide-y divide-gray-200">
-          <li>
+
+        <!-- Error State -->
+        <div *ngIf="loadError" class="px-4 py-6 text-center">
+          <p class="text-sm text-red-600">{{ loadError }}</p>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="px-4 py-6 text-center">
+          <div class="animate-pulse flex items-center justify-center space-x-2">
+            <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+            <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+            <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+            <span class="text-sm text-gray-500 ml-2">Cargando eventos...</span>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading && !loadError && events.length === 0" class="px-4 py-6 text-center">
+          <p class="text-sm text-gray-500">No hay eventos registrados recientemente</p>
+        </div>
+
+        <!-- Events List -->
+        <ul *ngIf="!loadError && events.length > 0" role="list" class="divide-y divide-gray-200">
+          <li *ngFor="let event of events">
             <div class="px-4 py-4 sm:px-6">
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
@@ -149,39 +175,18 @@
                   </div>
                   <div class="ml-4">
                     <div class="text-sm font-medium text-gray-900">
-                      Evento de seguridad reportado
+                      {{ event.patientFirstName }} {{ event.patientLastName }}
                     </div>
                     <div class="text-sm text-gray-500">
-                      Servicio de Urgencias - Hace 2 horas
+                      {{ event.service }} - {{ relativeTime(event.createdAt) }}
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">
+                      {{ truncate(event.description) }}
                     </div>
                   </div>
                 </div>
                 <div class="text-sm text-gray-500">
-                  Pendiente
-                </div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="px-4 py-4 sm:px-6">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <lucide-icon [img]="FileText" class="w-4 h-4 text-green-600"></lucide-icon>
-                    </div>
-                  </div>
-                  <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">
-                      Evento de seguridad resuelto
-                    </div>
-                    <div class="text-sm text-gray-500">
-                      Servicio de Medicina Interna - Hace 1 día
-                    </div>
-                  </div>
-                </div>
-                <div class="text-sm text-gray-500">
-                  Resuelto
+                  {{ event.notificationStatus }}
                 </div>
               </div>
             </div>

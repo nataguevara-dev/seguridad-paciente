@@ -1,0 +1,58 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    env_file:
+      - .env
+    environment:
+      PORT: 3000
+    network_mode: host
+    depends_on:
+      - mailhog
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:3000/healthz" ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: production
+    env_file:
+      - .env
+    network_mode: host
+    depends_on:
+      - backend
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost/" ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    network_mode: host
+
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: test
+    profiles:
+      - test
+    network_mode: host
+    depends_on:
+      - mailhog
+
+  frontend-test:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: test
+    profiles:
+      - test
+    network_mode: host

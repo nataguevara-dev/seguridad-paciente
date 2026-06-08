@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,6 +19,10 @@ interface EventData {
   location: string;
   occurredAt: string;
   description: string;
+}
+
+interface AuthToken {
+  token?: string;
 }
 
 @Component({
@@ -43,7 +47,8 @@ export class EventReportComponent {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.eventForm = this.fb.group({
       // Patient information
@@ -92,21 +97,43 @@ export class EventReportComponent {
 
   private async submitEvent(eventData: EventData) {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        this.submitError = 'No authentication token found. Please log in again.';
+        this.isSubmitting = false;
+        return;
+      }
 
-      // TODO: Replace with actual API call
-      console.log('Submitting event:', eventData);
+      const response = await fetch('http://localhost:3000/api/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(eventData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        this.submitError = errorData.message || 'Error al enviar el reporte. Por favor intente nuevamente.';
+        this.isSubmitting = false;
+        this.cdr.detectChanges();
+        return;
+      }
+
+      const result = await response.json();
+      console.log('Event submitted successfully:', result);
 
       this.submitSuccess = true;
+      this.cdr.detectChanges();
       setTimeout(() => {
         this.router.navigate(['/dashboard']);
       }, 2000);
     } catch (error) {
       this.submitError = 'Error al enviar el reporte. Por favor intente nuevamente.';
       console.error('Error submitting event:', error);
-    } finally {
       this.isSubmitting = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -141,5 +168,9 @@ export class EventReportComponent {
   hasFieldError(fieldName: string): boolean {
     const control = this.eventForm.get(fieldName);
     return !!(control?.errors && control.touched);
+  }
+
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
   }
 }

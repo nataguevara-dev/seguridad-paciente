@@ -2,6 +2,8 @@ import { SafetyEvent } from '../models';
 import { NotificationConfigModel } from '../models/notification-config';
 import { config } from '../config';
 
+import nodemailer from 'nodemailer';
+
 export interface NotificationResult {
   success: boolean;
   message: string;
@@ -10,29 +12,58 @@ export interface NotificationResult {
 export class NotificationService {
   constructor(private notificationConfigModel: NotificationConfigModel) {}
 
+  private async createTransport() {
+    // If simulateEmail is enabled, use MailHog SMTP settings
+    if (config.simulateEmail || config.mailTransport === 'mailhog') {
+      return nodemailer.createTransport({
+        host: config.mailhogHost,
+        port: config.mailhogSmtpPort,
+        secure: false
+      });
+    }
+
+    // If SMTP_URL is provided, use it (not set by default in prototype)
+    if (process.env.SMTP_HOST) {
+      return nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '587', 10),
+        secure: (process.env.SMTP_SECURE || 'false') === 'true',
+        auth: process.env.SMTP_USER
+          ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+          : undefined
+      });
+    }
+
+    // Fallback: no transport (will log instead)
+    return null;
+  }
+
   async sendSupervisorNotification(event: SafetyEvent): Promise<NotificationResult> {
     try {
-      const config = await this.notificationConfigModel.get();
+      const cfg = await this.notificationConfigModel.get();
 
-      // In a real implementation, this would send an actual email
-      // For prototype, we'll just log the notification
-      console.log(`[NOTIFICATION] Sending email to supervisor ${config.supervisorEmail}`);
-      console.log(`Subject: New Patient Safety Event Reported`);
-      console.log(`Event ID: ${event.id}`);
-      console.log(`Reporter: ${event.reporterId}`);
-      console.log(`Patient: ${event.patientId}`);
-      console.log(`Service: ${event.service}`);
-      console.log(`Location: ${event.location}`);
-      console.log(`Description: ${event.description}`);
-      console.log(`Occurred At: ${event.occurredAt}`);
+      const transport = await this.createTransport();
 
-      // Simulate async email sending
-      await new Promise(resolve => setTimeout(resolve, 100));
+      const subject = 'New Patient Safety Event Reported';
+      const body = `Event ID: ${event.id}\nReporter: ${event.reporterId}\nPatient: ${event.patientId}\nService: ${event.service}\nLocation: ${event.location}\nOccurred At: ${event.occurredAt}\n\nDescription:\n${event.description}`;
 
-      return {
-        success: true,
-        message: 'Notification sent successfully'
-      };
+      if (transport) {
+        await transport.sendMail({
+          from: process.env.FROM_EMAIL || 'no-reply@example.com',
+          to: cfg.supervisorEmail || config.supervisorEmail,
+          subject,
+          text: body
+        });
+
+        return { success: true, message: 'Notification sent via SMTP' };
+      }
+
+      // Fallback: log the notification (no external delivery)
+      console.log(`[NOTIFICATION] (LOG) To: ${cfg.supervisorEmail || config.supervisorEmail}`);
+      console.log(`Subject: ${subject}`);
+      console.log(body);
+
+      return { success: true, message: 'Notification logged (no SMTP configured)' };
     } catch (error) {
       console.error('[NOTIFICATION ERROR]', error);
       return {
@@ -47,7 +78,7 @@ export class NotificationService {
   }
 
   async getSupervisorEmail(): Promise<string> {
-    const config = await this.notificationConfigModel.get();
-    return config.supervisorEmail;
+    const cfg = await this.notificationConfigModel.get();
+    return cfg.supervisorEmail;
   }
 }

@@ -1,0 +1,100 @@
+<div class="fixed inset-0 z-50 overflow-y-auto">
+  <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" (click)="close.emit()"></div>
+
+    <div class="relative inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-2xl sm:w-full">
+      <!-- Header -->
+      <div class="bg-white px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+        <h3 class="text-lg font-medium text-gray-900">
+          Detalle del Evento
+        </h3>
+        <button (click)="close.emit()"
+                class="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none">
+          <lucide-icon [img]="X" class="w-5 h-5"></lucide-icon>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="px-6 py-4 max-h-[70vh] overflow-y-auto">
+        <!-- Patient Section -->
+        <div class="mb-6">
+          <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Información del Paciente</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-gray-500">Nombre Completo</p>
+              <p class="text-sm font-medium text-gray-900">{{ event.patientFirstName }} {{ event.patientLastName }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Historia Clínica</p>
+              <p class="text-sm font-medium text-gray-900">{{ event.clinicalHistoryNumber || '—' }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Tipo de Documento</p>
+              <p class="text-sm font-medium text-gray-900">{{ event.documentType || '—' }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Número de Documento</p>
+              <p class="text-sm font-medium text-gray-900">{{ event.documentNumber || '—' }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Fecha de Nacimiento</p>
+              <p class="text-sm font-medium text-gray-900">{{ event.birthDate ? formatDate(event.birthDate) : '—' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-gray-200 my-4"></div>
+
+        <!-- Event Section -->
+        <div class="mb-6">
+          <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Información del Evento</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-gray-500">Servicio</p>
+              <p class="text-sm font-medium text-gray-900">{{ event.service }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Ubicación</p>
+              <p class="text-sm font-medium text-gray-900">{{ event.location }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Fecha del Incidente</p>
+              <p class="text-sm font-medium text-gray-900">{{ formatDate(event.occurredAt) }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Fecha de Reporte</p>
+              <p class="text-sm font-medium text-gray-900">{{ formatDate(event.createdAt) }}</p>
+            </div>
+            <div class="col-span-2">
+              <p class="text-xs text-gray-500">Estado de Notificación</p>
+              <p class="text-sm font-medium" [class]="statusLabel(event.notificationStatus) === 'Error' ? 'text-red-600' : statusLabel(event.notificationStatus) === 'Enviado' ? 'text-green-600' : 'text-yellow-600'">
+                {{ statusLabel(event.notificationStatus) }}
+              </p>
+            </div>
+            <div *ngIf="event.notificationError" class="col-span-2">
+              <p class="text-xs text-gray-500">Error de Notificación</p>
+              <p class="text-sm font-medium text-red-600">{{ event.notificationError }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Descripción Completa</h4>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <p class="text-sm text-gray-700 whitespace-pre-wrap">{{ event.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-gray-50 px-6 py-3 flex justify-end">
+        <button (click)="close.emit()"
+                class="inline-flex items-center bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

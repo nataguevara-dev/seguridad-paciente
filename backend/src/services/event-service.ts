@@ -1,4 +1,4 @@
-import { SafetyEvent, Patient } from '../models';
+import { SafetyEvent, Patient, EventFilters, PaginatedResult, StatisticsFilters, StatisticsResult } from '../models';
 import { EventRepository } from '../repositories/event-repository';
 import { PatientRepository } from '../repositories/patient-repository';
 import { NotificationService } from '../services/notification-service';
@@ -74,6 +74,36 @@ export class EventService {
 
   async getEventsByReporter(reporterId: string): Promise<SafetyEvent[]> {
     return this.eventRepository.findByReporterId(reporterId);
+  }
+
+  async getEvents(limit: number = 10): Promise<SafetyEvent[]> {
+    return this.eventRepository.findRecent(limit);
+  }
+
+  async getFilteredEvents(filters: EventFilters, page: number = 1, pageSize: number = 20): Promise<PaginatedResult> {
+    const validatedPage = Math.max(1, Math.floor(page));
+    const validatedPageSize = Math.max(1, Math.min(50, Math.floor(pageSize)));
+
+    if (filters.month !== undefined && (filters.month < 1 || filters.month > 12)) {
+      throw new ValidationError('Invalid query parameters: month must be between 1 and 12');
+    }
+
+    if (filters.year !== undefined && (filters.year < 1900 || filters.year > 2099)) {
+      throw new ValidationError('Invalid query parameters: year must be between 1900 and 2099');
+    }
+
+    if (filters.patientName !== undefined && filters.patientName.trim().length < 2) {
+      delete filters.patientName;
+    }
+
+    return this.eventRepository.findFiltered(filters, validatedPage, validatedPageSize);
+  }
+
+  async getStatistics(filters: StatisticsFilters): Promise<StatisticsResult> {
+    if (filters.from && filters.to && new Date(filters.from) > new Date(filters.to)) {
+      throw new ValidationError('Invalid date range: "from" must not be later than "to"');
+    }
+    return this.eventRepository.getStatistics(filters);
   }
 
   private async sendNotification(event: SafetyEvent): Promise<void> {
