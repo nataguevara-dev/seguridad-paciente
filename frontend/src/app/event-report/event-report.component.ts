@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { API_EVENTS_URL } from '../config';
 import { LucideAngularModule, AlertTriangle, Send, User, FileText, MapPin, Calendar } from 'lucide-angular';
 
 interface PatientData {
@@ -104,7 +105,7 @@ export class EventReportComponent {
         return;
       }
 
-      const response = await fetch('http://localhost:3000/api/events', {
+      const response = await fetch(API_EVENTS_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

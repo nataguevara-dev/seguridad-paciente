@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { API_EVENTS_URL } from '../config';
 import { EventReportComponent } from './event-report.component';
 
 describe('EventReportComponent', () => {
@@ -215,7 +216,7 @@ describe('EventReportComponent', () => {
       });
 
       expect(component.submitSuccess).toBe(true);
-      expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/events', expect.objectContaining({
+      expect(fetch).toHaveBeenCalledWith(API_EVENTS_URL, expect.objectContaining({
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer test-token' }
       }));

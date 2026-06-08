@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { EventsService } from './events.service';
+import { API_EVENTS_URL } from '../config';
 import { AuthService } from './auth.service';
 
 describe('EventsService', () => {
@@ -27,7 +28,7 @@ describe('EventsService', () => {
       const result = await service.getEvents(10);
 
       expect(result).toEqual(mockEvents);
-      expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/events?limit=10', expect.objectContaining({
+      expect(fetch).toHaveBeenCalledWith(`${API_EVENTS_URL}?limit=10`, expect.objectContaining({
         headers: { 'Authorization': 'Bearer test-token', 'Content-Type': 'application/json' }
       }));
     });
